@@ -48,7 +48,7 @@ public enum BotState {
 
             if (Utils.isValidEmailAddress(email)) {
                 context.getUser().setEmail(context.getInput());
-                next = Approved;
+                next = EnterWishes;
             } else {
                 sendMessage(context, "Wrong e-mail address!");
                 next = EnterEmail;
@@ -58,6 +58,24 @@ public enum BotState {
         @Override
         public BotState nextState() {
             return next;
+        }
+    },
+
+
+    EnterWishes {
+        @Override
+        public void enter(BotContext context) {
+            sendMessage(context, "Enter your wishes: ");
+        }
+
+        @Override
+        public void handleInput(BotContext context) {
+            context.getUser().setWishes(context.getInput());
+        }
+
+        @Override
+        public BotState nextState() {
+            return Approved;
         }
     },
 
@@ -72,6 +90,8 @@ public enum BotState {
             return Start;
         }
     };
+
+    // --------------- //
 
     private static BotState[] states;
     private final boolean inputNeeded;
@@ -97,9 +117,9 @@ public enum BotState {
     }
 
     protected void sendMessage(BotContext context, String text) {
-        SendMessage message = new SendMessage()
-                .setChatId(context.getUser().getChatId())
-                .setText(text);
+        SendMessage message = new SendMessage();
+        message.setChatId(Long.toString(context.getUser().getChatId()));
+        message.setText(text);
         try {
             context.getBot().execute(message);
         } catch (TelegramApiException e) {

@@ -14,6 +14,8 @@ public class User {
     private Integer stateId;
     private String phone;
     private String email;
+
+    private String wishes;
     private Boolean admin;
     private Boolean notified = false;
 
@@ -61,6 +63,14 @@ public class User {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getWishes() {
+        return wishes;
+    }
+
+    public void setWishes(String wishes) {
+        this.wishes = wishes;
     }
 
     public String getEmail() {
